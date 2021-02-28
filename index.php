@@ -72,35 +72,7 @@
                 $bottles++;
             }
         }
-        // for ($i = 1; $i <= $required_bottles; $i++) {
-        //     if (($n * $prices_bottles[0]) < $prices_bottles[1]) {
-        //         if ($remain == 0) {
-        //             $bottles++;
-        //             $n++;
-        //         } else {
-        //             $remain--;
-        //         }
-        //     } else {
-        //         $packs++;
-        //         $bottles = 0;
-        //         $remain = 12 - $n;
-        //         $n = 0;
-        //     }
-        //     if (($i * $prices_bottles[1]) < $prices_bottles[2]) {
-        //         if ($remain == 0) {
-        //             $packs++;
-        //             $n++;
-        //         } else {
-        //             $remain--;
-        //         }
-        //     } else {
-        //         $boxes++;
-        //         $packs = 0;
-        //         $remain = 12 - $n;
-        //         $n = 0;
-        //     }
-        // }
-
+        
         $final_price = ($bottles * 2.3) + ($packs * 25) + ($boxes * 230);
         echo '"bottles" : ' . $bottles . ',“packs”: ' . $packs . ',“Box”: ' . $boxes . ',"price" : ' . $final_price;
     }
