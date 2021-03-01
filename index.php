@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Packet Pricing</title>
 </head>
 
@@ -43,7 +44,7 @@
     ini_set('error_reporting', E_ALL);
     ini_set('display_startup_errors',1);
     error_reporting(-1);
-    
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $required_bottles = $_POST['Required-Bottles'];
         // $required_bottles = 1;
