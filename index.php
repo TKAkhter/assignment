@@ -57,22 +57,29 @@
         $n = 1;
         $remain = $required_bottles;
         while ($remain > 0) {
-            // echo 'hi0 '. $prices_bottles[1].'<'.$remain * $prices_bottles[0];
-            if (($remain *$prices_bottles[2]) < ($remain * $prices_bottles[1])) {
-                echo 'hi '.$prices_bottles[2].'<'.$remain * $prices_bottles[1];
+            // echo 'hi-a ' . $prices_bottles[1] . '<' . $remain * $prices_bottles[0];
+            $final_price = ($bottles * 2.3) + ($packs * 25);
+            echo $final_price . '=' . $remain . '>';
+            if ($final_price > $prices_bottles[2]) {
+                // if ($prices_bottles[2] < ($remain * $prices_bottles[1]) && $remain > 0) {
+                echo 'hi-e';
                 $remain = $remain - 120;
                 $boxes++;
-            } else if ($prices_bottles[1] < ($remain * $prices_bottles[0])) {
-                echo 'hi2';
+                $bottles = 0;
+                $packs = 0;
+                continue;
+            }
+            if ($prices_bottles[1] < ($remain * $prices_bottles[0]) && $remain > 0) {
+                // echo 'hi-b';
                 $remain = $remain - 12;
                 $packs++;
-            } else {
-                echo 'hi3';
-                $remain = $remain - 1;
-                $bottles++;
+                continue;
             }
+            // echo 'hi-d';
+            $remain = $remain - 1;
+            $bottles++;
         }
-        
+
         $final_price = ($bottles * 2.3) + ($packs * 25) + ($boxes * 230);
         echo '"bottles" : ' . $bottles . ',“packs”: ' . $packs . ',“Box”: ' . $boxes . ',"price" : ' . $final_price;
     }
