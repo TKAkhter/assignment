@@ -39,16 +39,8 @@
 
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // collect value of input field
-        //   $name = $_POST['fname'];
-        //   if (empty($name)) {
-        //       echo "Name is empty";
-        //   } else {
-        //       print_r($_POST);
-
-        //   }
         $required_bottles = $_POST['Required-Bottles'];
-
+        // $required_bottles = 1;
         // $prices_bottles = $_POST['Prices-Bottles'];
         $prices_bottles = '2.3,25,230';
         $prices_bottles =  explode(",", trim($prices_bottles));
@@ -64,33 +56,28 @@
         $boxes = 0;
         $n = 1;
         $remain = $required_bottles;
-        for ($i = 1; $i <= $required_bottles; $i++) {
-            if (($n * $prices_bottles[0]) < $prices_bottles[1]) {
-                if ($remain == 0) {
-                    $bottles++;
-                    $n++;
-                } else {
-                    $remain--;
-                }
-            } else {
-                $packs++;
-                $bottles = 0;
-                $remain = 12 - $n;
-                $n = 0;
-            }
-            if (($i * $prices_bottles[1]) < $prices_bottles[2]) {
-                if ($remain == 0) {
-                    $packs++;
-                    $n++;
-                } else {
-                    $remain--;
-                }
-            } else {
+        while ($remain > 0) {
+            // echo 'hi-a ' . $prices_bottles[1] . '<' . $remain * $prices_bottles[0];
+            $final_price = ($bottles * 2.3) + ($packs * 25);
+            echo $final_price . '=' . $remain . '>';
+            if ($final_price > $prices_bottles[2]) {
+                // if ($prices_bottles[2] < ($remain * $prices_bottles[1]) && $remain > 0) {
+                echo 'hi-e';
+                $remain = $remain - 120;
                 $boxes++;
+                $bottles = 0;
                 $packs = 0;
-                $remain = 12 - $n;
-                $n = 0;
+                continue;
             }
+            if ($prices_bottles[1] < ($remain * $prices_bottles[0]) && $remain > 0) {
+                // echo 'hi-b';
+                $remain = $remain - 12;
+                $packs++;
+                continue;
+            }
+            // echo 'hi-d';
+            $remain = $remain - 1;
+            $bottles++;
         }
 
         $final_price = ($bottles * 2.3) + ($packs * 25) + ($boxes * 230);
