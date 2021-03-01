@@ -15,19 +15,19 @@
 
             <div class="group-field">
                 <p><b>Number of bottles</b></p>
-                <input class="input-style" type="text" id="Required-Bottles" name="Required-Bottles" placeholder="Enter Number of bottles" />
+                <input required class="input-style" type="text" id="Required-Bottles" name="Required-Bottles" placeholder="Enter Number of bottles" />
                 <p class="tooltip-info"><i>EX: 15</i></p>
             </div>
 
             <div class="group-field">
                 <p><b>Prices</b></p>
-                <input class="input-style" type="text" id="Prices-Bottles" name="Prices-Bottles" placeholder="Enter Prices for single, pack and box" />
+                <input required class="input-style" type="text" id="Prices-Bottles" name="Prices-Bottles" placeholder="Enter Prices for single, pack and box" />
                 <p class="tooltip-info"><i>EX: [2.3, 25, 230]</i></p>
             </div>
 
             <div class="group-field">
                 <p><b>Number of bottles</b></p>
-                <input class="input-style" type="text" id="Quantity-Bottles" name="Quantity-Bottles" placeholder="Enter Quantity for single, pack and box" />
+                <input required class="input-style" type="text" id="Quantity-Bottles" name="Quantity-Bottles" placeholder="Enter Quantity for single, pack and box" />
                 <p class="tooltip-info"><i>EX: [1, 12, 12*10]</i></p>
             </div>
 
@@ -38,32 +38,37 @@
     </form>
 
     <?php
+    error_reporting(E_ALL);
+    ini_set('display_errors',1);
+    ini_set('error_reporting', E_ALL);
+    ini_set('display_startup_errors',1);
+    error_reporting(-1);
+    
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $required_bottles = $_POST['Required-Bottles'];
         // $required_bottles = 1;
-        // $prices_bottles = $_POST['Prices-Bottles'];
-        $prices_bottles = '2.3,25,230';
+        $prices_bottles = $_POST['Prices-Bottles'];
+        // $prices_bottles = '2.3,25,230';
         $prices_bottles =  explode(",", trim($prices_bottles));
-        print_r($prices_bottles);
+        // print_r($prices_bottles);
 
-        // $quantity_bottles = $_POST['Quantity-Bottles'];
-        $quantity_bottles = '1,12,120';
+        $quantity_bottles = $_POST['Quantity-Bottles'];
+        // $quantity_bottles = '1,12,120';
         $quantity_bottles =  explode(",", trim($quantity_bottles));
-        print_r($quantity_bottles);
+        // print_r($quantity_bottles);
 
         $bottles = 0;
         $packs = 0;
         $boxes = 0;
-        $n = 1;
         $remain = $required_bottles;
         while ($remain > 0) {
             // echo 'hi-a ' . $prices_bottles[1] . '<' . $remain * $prices_bottles[0];
-            $final_price = ($bottles * 2.3) + ($packs * 25);
-            echo $final_price . '=' . $remain . '>';
+            $final_price = ($bottles * $prices_bottles[0]) + ($packs * $prices_bottles[1]);
+            // echo $final_price . '=' . $remain . '>';
             if ($final_price > $prices_bottles[2]) {
                 // if ($prices_bottles[2] < ($remain * $prices_bottles[1]) && $remain > 0) {
-                echo 'hi-e';
-                $remain = $remain - 120;
+                // echo 'hi-e';
+                $remain = $remain - $quantity_bottles[2];
                 $boxes++;
                 $bottles = 0;
                 $packs = 0;
@@ -71,18 +76,32 @@
             }
             if ($prices_bottles[1] < ($remain * $prices_bottles[0]) && $remain > 0) {
                 // echo 'hi-b';
-                $remain = $remain - 12;
+                $remain = $remain - $quantity_bottles[1];
                 $packs++;
                 continue;
             }
             // echo 'hi-d';
-            $remain = $remain - 1;
+            $remain = $remain - $quantity_bottles[0];
             $bottles++;
         }
 
-        $final_price = ($bottles * 2.3) + ($packs * 25) + ($boxes * 230);
-        echo '"bottles" : ' . $bottles . ',“packs”: ' . $packs . ',“Box”: ' . $boxes . ',"price" : ' . $final_price;
+        $final_price = ($bottles * $prices_bottles[0]) + ($packs * $prices_bottles[1]) + ($boxes * $prices_bottles[2]);
+        // echo '"bottles" : ' . $bottles . ',“packs”: ' . $packs . ',“Box”: ' . $boxes . ',"price" : ' . $final_price;
+
+        response($final_price, $bottles, $packs, $boxes);
     }
+
+    function response($final_price, $bottles, $packs, $boxes)
+    {
+        $response['bottles'] = $bottles;
+        $response['packs'] = $packs;
+        $response['Box'] = $boxes;
+        $response['price'] = $final_price;
+
+        $json_response = json_encode($response);
+        echo $json_response;
+    }
+
     ?>
     <p>The coding challenge consists of two related tasks. The second task may not be solved without<br />solving the
         first task first. The second task's visual appearance can be wireframe quality Please,<br />tell us if both
