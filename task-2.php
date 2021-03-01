@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <h2>Task 2</h2>
     <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
         <fieldset>
             <legend>Required Information</legend>
@@ -40,9 +41,9 @@
 
     <?php
     error_reporting(E_ALL);
-    ini_set('display_errors',1);
+    ini_set('display_errors', 1);
     ini_set('error_reporting', E_ALL);
-    ini_set('display_startup_errors',1);
+    ini_set('display_startup_errors', 1);
     error_reporting(-1);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -89,51 +90,34 @@
         $final_price = ($bottles * $prices_bottles[0]) + ($packs * $prices_bottles[1]) + ($boxes * $prices_bottles[2]);
         // echo '"bottles" : ' . $bottles . ',“packs”: ' . $packs . ',“Box”: ' . $boxes . ',"price" : ' . $final_price;
 
-        response($final_price, $bottles, $packs, $boxes);
+        response($final_price, $bottles, $packs, $boxes, $quantity_bottles, $prices_bottles);
     }
 
-    function response($final_price, $bottles, $packs, $boxes)
+    function response($final_price, $bottles, $packs, $boxes, $quantity_bottles, $prices_bottles)
     {
-        $response['bottles'] = $bottles;
-        $response['packs'] = $packs;
-        $response['Box'] = $boxes;
-        $response['price'] = $final_price;
+        $response['pricelist']['piece']['name'] = "Bottles";
+        $response['pricelist']['piece']['quantity'] = $quantity_bottles[0];
+        $response['pricelist']['piece']['price'] = $prices_bottles[0];
+        $response['pricelist']['pack']['name'] = "12-pack";
+        $response['pricelist']['pack']['quantity'] = $quantity_bottles[1];
+        $response['pricelist']['pack']['price'] = $prices_bottles[1];
+        $response['pricelist']['box']['name'] = "Big box";
+        $response['pricelist']['box']['quantity'] = $quantity_bottles[2];
+        $response['pricelist']['box']['price'] = $prices_bottles[2];
+        $response['result']['bottles'] = $bottles;
+        $response['result']['packs'] = $packs;
+        $response['result']['Box'] = $boxes;
+        $response['result']['price'] = $final_price;
 
         $json_response = json_encode($response);
         echo $json_response;
     }
 
     ?>
-    <p>The coding challenge consists of two related tasks. The second task may not be solved without<br />solving the
-        first task first. The second task's visual appearance can be wireframe quality Please,<br />tell us if both
-        tasks required more than 3 hours to solve.</p>
-    <p><br />Your work will not be used for any other purpose than this recruitment process. However, we do<br />suggest
-        licensing your work with an Open Source license. We kindly ask you to agree not to<br />distribute this material
-        without any prior written permission from us.</p>
-    <p><br /><strong>Task 1.</strong> A bottle costs 2 euros 30 cents apiece. A pack of twelve bottles costs 25 euros. A
-        box<br />of 10 packs - 230 euros. Write an API, containing a function (see below), that given a number
-        of<br />bottles needed to calculate the number of bottles, packs and boxes. The program should<br />maximally
-        save buyer&rsquo;s money.</p>
-    <p><br />More specifically, the function must have the following signature:</p>
-    <p><br /><span style="color: #ff6600;">calculate</span> ( <span style="color: #3366ff;">requiredBottles </span>,
-        <span style="color: #3366ff;">prices</span> , <span style="color: #3366ff;">pieces</span> )
-    </p>
-    <p><br />where n is a minimally required number of bottles, prices is a list of prices for a bottle, a
-        pack,<br />and a box, and pieces is a list of quantities of bottles in each package, for example: [1,
-        12,<br />12*10]. The function must return a list of units in each package to satisfy the number of bottles.</p>
-    <p><br />For example, api should take input in following format</p>
-    <p><br />{<br />"requiredBottles" : 11,<br />"prices" : [2.3, 25, 230],<br />"pieces" : [1, 12, 12*10]<br />}</p>
-    <p><br />and result of the above input is</p>
-    <p><br />{<br />"bottles" : 0,,<br />&ldquo;packs&rdquo;: 1,<br />&ldquo;Box&rdquo;: 0,<br />"price" : 25<br />}</p>
-    <p><br />Where [0, 1, 0] as a result of calculation will mean 0 individual bottles, 1 pack of bottles and
-        0<br />boxes. And price is (0 + 25*1 + 0 = 25)</p>
-    <p><br />Another example, api should take input in following format</p>
-    <p><br />{<br />"requiredBottles" : 2,<br />"prices" : [2.3, 15, 1],<br />"pieces" : [1, 12, 12*10]<br />}</p>
-    <p><br />and result of the above input is</p>
-    <p><br />{<br />"bottles" : 0,<br />&ldquo;packs&rdquo;:0 ,<br />&ldquo;Box&rdquo;: 1,<br />"price" : 1<br />}</p>
-    <p><br />Where [0, 0, 1] as a result of calculation will mean 0 individual bottles, 0 pack of bottles and
-        1<br />box. And price is (0+0+1*1=1)<br />Choose preferably PHP (Laravel) or NodeJS or any programming language.
-        It would be good if<br />you also consider writing Unit and Integration tests.</p>
+    <p><strong>Task 2.</strong> Assume the following JSON data is available to the frontend via GET request (this is an example):</p>
+    <p><br />{<br />"<strong><span style="color: #800080;">pricelist</span></strong>" : [<br />{<br />"<strong><span style="color: #800080;">piece</span></strong>" : { "<strong><span style="color: #800080;">name</span></strong>" : "<strong><span style="color: #008000;">Bottle</span></strong>" , "<strong><span style="color: #800080;">quantity</span></strong>" : <strong><span style="color: #0000ff;">1</span></strong> , "<strong><span style="color: #800080;">price</span></strong>" : <span style="color: #0000ff;"><strong>2.3</strong></span> },<br />"<strong><span style="color: #800080;">pack</span></strong>" : { "<strong><span style="color: #800080;">name</span></strong>" : "<strong><span style="color: #008000;">12-pack</span></strong>" , "<strong><span style="color: #800080;">quantity</span></strong>" : <span style="color: #0000ff;">12</span> , "<strong><span style="color: #800080;">price</span></strong>" : <span style="color: #0000ff;"><strong>25</strong></span> },<br />"<strong><span style="color: #800080;">box</span></strong>" : { "<strong><span style="color: #800080;">name</span></strong>" : "<span style="color: #008000;"><strong>Big box</strong></span>" , "<strong><span style="color: #800080;">quantity</span></strong>" : <span style="color: #0000ff;"><strong>120</strong> </span>, "<strong><span style="color: #800080;">price</span></strong>" : <span style="color: #0000ff;"><strong>230</strong> </span>}<br />}<br />]}</p>
+    <p><br />Design and code a visualization of the pricelist with a possibility for a buyer to input the minimum required number of pieces of each product and get a calculation of how many packages of each product one needs to buy to maximally save money using the API written in Task 1 and fetch the data through GET API written in Task 2. Choose any Javascript framework Preferably React or Angular or Vue.js. It would be good if you write Unit tests for each component.</p>
+    <p>Please, provide source codes in a zip archive for the programs to <a href="mailto:abdul.moeed@progstream.com">abdul.moeed@progstream.com</a> with CODING in the subject and a couple of screenshots, illustrating how the solution works. Would be nice if the solution will work when the html file is opened in the browser.</p>
 </body>
 
 </html>
